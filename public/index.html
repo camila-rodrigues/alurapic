@@ -6,7 +6,9 @@
         <title>Alurapic</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/efeitos.css">
         <script src="js/lib/angular.min.js"></script>
+        <script src="js/lib/angular-animate.min.js"></script>
         <script src="js/main.js"></script>
         <script src="js/controllers/fotos-controller.js"></script>
         <script src="js/directives/minhas-diretivas.js"></script>
@@ -18,7 +20,15 @@
             </div>
 
             <div class="row">
-                <meu-painel ng-repeat="foto in fotos" titulo="{{foto.titulo}}">
+                <div class="col-md-12">
+                    <form>
+                        <input class="form-control" placeholder="Filtrar pelo título da foto" ng-model="filtro" ng-model-options="{debounce:500}">
+                    </form>
+                </div> <!--fim col-md-12 -->
+            </div> <!--fim row-->
+
+            <div class="row">
+                <meu-painel class="col-md-2 painel-animado" ng-repeat="foto in fotos | filter: {titulo:filtro}" titulo="{{foto.titulo}}">
                     <img class="img-responsive center-block" src="{{foto.url}}" alt="{{foto.titulo}}">
                 </meu-painel>
             </div> <!--fim row-->
