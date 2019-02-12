@@ -7,7 +7,7 @@
 <form novalidate name="formulario" class="row" ng-submit="submeter()">
     <div class="col-md-6">
         <div class="form-group">
-            <label>{{ foto.titulo }}</label>
+            <label>Titulo</label>
             <input name="titulo" class="form-control" ng-model="foto.titulo" required ng-maxlength="20">
             <span ng-show="formulario.$submitted && formulario.titulo.$error.required" class="form-control alert-danger">Titulo obrigatório</span>
             <span ng-show="formulario.$submitted && formulario.titulo.$error.maxlength" class="form-control alert-danger">No máximo 20 caracteres</span>
