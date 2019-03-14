@@ -22,7 +22,6 @@ angular.module("alurapic").controller("FotoController", function($scope, $http, 
                 $http.put("/v1/fotos/" + $routeParams.fotoId, $scope.foto)
                 .success(function() {
                     $scope.mensagem = "Foto " + $scope.foto.titulo + " atualizada com sucesso";
-                    $scope.foto = {};
                 })
                 .error(function() {
                     $scope.mensagem = "Não foi possível atualizar a foto";
@@ -36,6 +35,9 @@ angular.module("alurapic").controller("FotoController", function($scope, $http, 
             .success(function() {
                 $scope.foto = {};
                 $scope.mensagem = "Foto inserida com sucesso";
+
+                // $setPristine() method is used to remove the ng-dirty class and set the control to its pristine state (ng-pristine class) (the old/last state)
+                $scope.formulario.$setPristine();
             })
             .error(function(erro) {
                 $scope.mensagem = "Foto não foi inserida devido a algum erro";
