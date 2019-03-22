@@ -1,13 +1,12 @@
-angular.module("alurapic").controller("FotoController", function($scope, $http, $routeParams) {
+angular.module("alurapic").controller("FotoController", function($scope, $routeParams, recursoFoto) {
     $scope.foto = {};
     $scope.mensagem = "";
 
     if ($routeParams.fotoId) {
-        $http.get("/v1/fotos/" + $routeParams.fotoId)
-        .success(function(foto) {
+        
+        recursoFoto.get({fotoId: $routeParams.fotoId}, function(foto) {
             $scope.foto = foto;
-        })
-        .error(function(erro) {
+        }, function(erro) {
             console.log(erro);
             $scope.mensagem = "Não foi possível localizar a foto"
         });
@@ -19,11 +18,9 @@ angular.module("alurapic").controller("FotoController", function($scope, $http, 
             
             if ($routeParams.fotoId) {
 
-                $http.put("/v1/fotos/" + $routeParams.fotoId, $scope.foto)
-                .success(function() {
+                recursoFoto.update({fotoId: $routeParams.fotoId}, $scope.foto, function() {
                     $scope.mensagem = "Foto " + $scope.foto.titulo + " atualizada com sucesso";
-                })
-                .error(function() {
+                }, function() {
                     $scope.mensagem = "Não foi possível atualizar a foto";
                     console.log(erro);
                 });
@@ -31,15 +28,13 @@ angular.module("alurapic").controller("FotoController", function($scope, $http, 
                 return;
             }
 
-            $http.post("/v1/fotos", $scope.foto)
-            .success(function() {
+            recursoFoto.save($scope.foto, function() {
                 $scope.foto = {};
                 $scope.mensagem = "Foto inserida com sucesso";
 
                 // $setPristine() method is used to remove the ng-dirty class and set the control to its pristine state (ng-pristine class) (the old/last state)
                 $scope.formulario.$setPristine();
-            })
-            .error(function(erro) {
+            }, function(erro) {
                 $scope.mensagem = "Foto não foi inserida devido a algum erro";
                 console.log(erro);
             });
