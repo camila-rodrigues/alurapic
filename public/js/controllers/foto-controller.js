@@ -1,4 +1,4 @@
-angular.module("alurapic").controller("FotoController", function($scope, $routeParams, recursoFoto) {
+angular.module("alurapic").controller("FotoController", function($scope, $routeParams, recursoFoto, cadastroDeFoto) {
     $scope.foto = {};
     $scope.mensagem = "";
 
@@ -15,28 +15,23 @@ angular.module("alurapic").controller("FotoController", function($scope, $routeP
     $scope.submeter = function() {
         
         if ($scope.formulario.$valid) {
-            
-            if ($routeParams.fotoId) {
 
-                recursoFoto.update({fotoId: $routeParams.fotoId}, $scope.foto, function() {
-                    $scope.mensagem = "Foto " + $scope.foto.titulo + " atualizada com sucesso";
-                }, function() {
-                    $scope.mensagem = "Não foi possível atualizar a foto";
-                    console.log(erro);
-                });
+            cadastroDeFoto.cadastrar($scope.foto)
+            .then(function(dados)
+            {
+                $scope.mensagem = dados.mensagem;
 
-                return;
-            }
-
-            recursoFoto.save($scope.foto, function() {
-                $scope.foto = {};
-                $scope.mensagem = "Foto inserida com sucesso";
-
-                // $setPristine() method is used to remove the ng-dirty class and set the control to its pristine state (ng-pristine class) (the old/last state)
-                $scope.formulario.$setPristine();
-            }, function(erro) {
-                $scope.mensagem = "Foto não foi inserida devido a algum erro";
-                console.log(erro);
+                if (dados.inclusao)
+                {
+                    $scope.foto = {};
+                    
+                    // $setPristine() method is used to remove the ng-dirty class and set the control to its pristine state (ng-pristine class) (the old/last state)
+                    $scope.formulario.$setPristine();
+                }
+            })
+            .catch(function(erro)
+            {
+                $scope.mensagem = erro.mensagem;
             });
         }
     }
